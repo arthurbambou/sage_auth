@@ -7,3 +7,10 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+reqwest = { version = "^0.10.1", features = ["json"] }
+serde = "^1.0.103"
+serde_derive = "^1.0.103"
+url = "^2.1.1"
+
+[dev-dependencies]
+tokio = { version = "0.2", features = ["macros"] }
