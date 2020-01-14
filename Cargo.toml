@@ -1,8 +1,11 @@
 [package]
 name = "sage_auth"
+description = "Minecraft authentication library"
+repository = "https://github.com/YanWQ-monad/sage_auth"
 version = "0.1.0"
 authors = ["YanWQ-monad <YanWQmonad@gmail.com>"]
 edition = "2018"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
