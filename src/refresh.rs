@@ -2,6 +2,7 @@ use reqwest::{IntoUrl, StatusCode, Url};
 use serde_derive::{Deserialize, Serialize};
 use uuid::Uuid;
 
+use crate::consts::DEFAULT_SERVER;
 use crate::types::{Profile, User};
 use crate::{Error, Result};
 
@@ -36,7 +37,7 @@ impl<'a> RefreshBuilder<'a> {
                 client_token: None,
                 request_user: false,
             },
-            server: Url::parse("https://authserver.mojang.com").unwrap(),
+            server: (*DEFAULT_SERVER).clone(),
             endpoint: "/refresh",
         }
     }

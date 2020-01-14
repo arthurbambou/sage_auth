@@ -1,6 +1,7 @@
 use reqwest::{IntoUrl, StatusCode, Url};
 use serde_derive::Serialize;
 
+use crate::consts::DEFAULT_SERVER;
 use crate::{Error, Result};
 
 #[derive(Serialize)]
@@ -23,7 +24,7 @@ impl<'a> SignoutBuilder<'a> {
                 username: None,
                 password: None,
             },
-            server: Url::parse("https://authserver.mojang.com").unwrap(),
+            server: (*DEFAULT_SERVER).clone(),
             endpoint: "/signout",
         }
     }

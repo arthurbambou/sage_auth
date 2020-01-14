@@ -2,6 +2,7 @@ use reqwest::{IntoUrl, StatusCode, Url};
 use serde_derive::{Deserialize, Serialize};
 use uuid::Uuid;
 
+use crate::consts::DEFAULT_SERVER;
 use crate::types::{Profile, User};
 use crate::{Error, Result};
 
@@ -51,7 +52,7 @@ impl<'a> AuthenticateBuilder<'a> {
                     version: 1,
                 },
             },
-            server: Url::parse("https://authserver.mojang.com").unwrap(),
+            server: (*DEFAULT_SERVER).clone(),
             endpoint: "/authenticate",
         }
     }

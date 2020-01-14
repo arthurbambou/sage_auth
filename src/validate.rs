@@ -2,6 +2,7 @@ use reqwest::{IntoUrl, StatusCode, Url};
 use serde_derive::Serialize;
 use uuid::Uuid;
 
+use crate::consts::DEFAULT_SERVER;
 use crate::{Error, Result};
 
 #[derive(Serialize)]
@@ -24,7 +25,7 @@ impl<'a> ValidateBuilder<'a> {
                 access_token: None,
                 client_token: None,
             },
-            server: Url::parse("https://authserver.mojang.com").unwrap(),
+            server: (*DEFAULT_SERVER).clone(),
             endpoint: "/validate",
         }
     }
