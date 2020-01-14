@@ -1,3 +1,5 @@
+//! Invalidate request
+
 use reqwest::{IntoUrl, StatusCode, Url};
 use serde_derive::Serialize;
 use uuid::Uuid;
@@ -12,6 +14,18 @@ struct InvalidateParams<'a> {
     client_token: Option<Uuid>,
 }
 
+/// `InvalidateBuilder` is used to generate a invalidate request
+///
+/// An invalidate request can make the given `access_token` invalid.
+/// For example:
+/// ```
+/// # use crate::auth::InvalidateBuilder;
+/// let resp = InvalidateBuilder::new()
+///     .access_token("ACCESS_TOKEN")
+///     .client_token("CLIENT_TOKEN")
+///     .request()
+///     .await?;
+/// ```
 pub struct InvalidateBuilder<'a> {
     params: InvalidateParams<'a>,
     server: Url,
@@ -30,26 +44,32 @@ impl<'a> InvalidateBuilder<'a> {
         }
     }
 
+    /// Client token, the same as when you request `access_token`.
     pub fn client_token(&mut self, client_token: Uuid) -> &mut InvalidateBuilder<'a> {
         self.params.client_token = Some(client_token);
         self
     }
 
+    /// `access_token` to invalidate.
     pub fn access_token(&mut self, access_token: &'a str) -> &mut InvalidateBuilder<'a> {
         self.params.access_token = Some(access_token);
         self
     }
 
+    /// Set base url, default is `https://authserver.mojang.com`.
     pub fn server<T: IntoUrl>(&mut self, server: T) -> Result<&mut InvalidateBuilder<'a>> {
         self.server = server.into_url()?;
         Ok(self)
     }
 
+    /// set endpoint, default is `/authenticate`.
     pub fn endpoint(&mut self, endpoint: &'a str) -> &mut InvalidateBuilder<'a> {
         self.endpoint = endpoint;
         self
     }
 
+    /// Make a request with the given parameters.
+    /// If success, it will return `Ok(())`.
     pub async fn request(&mut self) -> Result<()> {
         if self.params.access_token.is_none() {
             return Err(Error::MissingField("access_token"));

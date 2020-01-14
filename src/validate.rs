@@ -1,3 +1,5 @@
+//! Validate request
+
 use reqwest::{IntoUrl, StatusCode, Url};
 use serde_derive::Serialize;
 use uuid::Uuid;
@@ -12,6 +14,20 @@ struct ValidateParams<'a> {
     client_token: Option<Uuid>,
 }
 
+/// `ValidateBuilder` is used to generate a validate request
+///
+/// It can check if an `access_token` is usable for authentication with a Minecraft server.
+///
+/// For more details, see [https://wiki.vg/Authentication].
+/// For example:
+/// ```
+/// # use crate::auth::ValidateBuilder;
+/// let resp = ValidateBuilder::new()
+///     .access_token("ACCESS_TOKEN")
+///     .client_token("CLIENT_TOKEN")
+///     .request()
+///     .await?;
+/// ```
 pub struct ValidateBuilder<'a> {
     params: ValidateParams<'a>,
     server: Url,
@@ -30,26 +46,32 @@ impl<'a> ValidateBuilder<'a> {
         }
     }
 
+    /// Client token, the same as when you request `access_token`.
     pub fn client_token(&mut self, client_token: Uuid) -> &mut ValidateBuilder<'a> {
         self.params.client_token = Some(client_token);
         self
     }
 
+    /// `access_token` to invalidate.
     pub fn access_token(&mut self, access_token: &'a str) -> &mut ValidateBuilder<'a> {
         self.params.access_token = Some(access_token);
         self
     }
 
+    /// Set base url, default is `https://authserver.mojang.com`.
     pub fn server<T: IntoUrl>(&mut self, server: T) -> Result<&mut ValidateBuilder<'a>> {
         self.server = server.into_url()?;
         Ok(self)
     }
 
+    /// set endpoint, default is `/authenticate`.
     pub fn endpoint(&mut self, endpoint: &'a str) -> &mut ValidateBuilder<'a> {
         self.endpoint = endpoint;
         self
     }
 
+    /// Make a request with the given parameters.
+    /// If success, it will return `Ok(())`.
     pub async fn request(&mut self) -> Result<()> {
         if self.params.access_token.is_none() {
             return Err(Error::MissingField("access_token"));

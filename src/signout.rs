@@ -1,3 +1,5 @@
+//! Signout request
+
 use reqwest::{IntoUrl, StatusCode, Url};
 use serde_derive::Serialize;
 
@@ -11,6 +13,18 @@ struct SignoutParams<'a> {
     password: Option<&'a str>,
 }
 
+/// `SignoutBuilder` is used to generate a signout request
+///
+/// Invalidates `access_token`s using an account's username and password.
+/// For example:
+/// ```
+/// # use crate::auth::SignoutBuilder;
+/// let resp = SignoutBuilder::new()
+///     .username("USERNAME")
+///     .password("PASSWORD")
+///     .request()
+///     .await?;
+/// ```
 pub struct SignoutBuilder<'a> {
     params: SignoutParams<'a>,
     server: Url,
@@ -29,26 +43,32 @@ impl<'a> SignoutBuilder<'a> {
         }
     }
 
+    /// Set username
     pub fn username(&mut self, username: &'a str) -> &mut SignoutBuilder<'a> {
         self.params.username = Some(username);
         self
     }
 
+    /// Set password
     pub fn password(&mut self, password: &'a str) -> &mut SignoutBuilder<'a> {
         self.params.password = Some(password);
         self
     }
 
+    /// Set base url, default is `https://authserver.mojang.com`.
     pub fn server<T: IntoUrl>(&mut self, server: T) -> Result<&mut SignoutBuilder<'a>> {
         self.server = server.into_url()?;
         Ok(self)
     }
 
+    /// set endpoint, default is `/authenticate`.
     pub fn endpoint(&mut self, endpoint: &'a str) -> &mut SignoutBuilder<'a> {
         self.endpoint = endpoint;
         self
     }
 
+    /// Make a request with the given parameters.
+    /// If success, it will return `Ok(())`.
     pub async fn request(&mut self) -> Result<()> {
         if self.params.username.is_none() {
             return Err(Error::MissingField("username"));
