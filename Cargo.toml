@@ -11,6 +11,7 @@ reqwest = { version = "^0.10.1", features = ["json"] }
 serde = "^1.0.103"
 serde_derive = "^1.0.103"
 url = "^2.1.1"
+uuid = { version = "0.8", features = ["serde", "v4"] }
 
 [dev-dependencies]
 tokio = { version = "0.2", features = ["macros"] }
