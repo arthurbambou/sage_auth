@@ -120,12 +120,12 @@ impl Session {
     }
 
     /// Get `access_token`
-    pub fn get_access_token(&self) -> &str {
+    pub fn access_token(&self) -> &str {
         &self.access_token
     }
 
     /// Get `client_token`
-    pub fn get_client_token(&self) -> Uuid {
+    pub fn client_token(&self) -> Uuid {
         self.client_token
     }
 }
