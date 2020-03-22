@@ -1,6 +1,6 @@
 //! Common types and conversion functions.
 
-use serde::de::Deserializer;
+use serde::{de::Deserializer, ser::Serializer};
 use serde_derive::Deserialize;
 use std::collections::HashMap;
 use uuid::Uuid;
@@ -122,4 +122,12 @@ where
     }
 
     deserializer.deserialize_seq(PropertiesParser)
+}
+
+/// Serialize Uuid to string without hyphens
+pub(crate) fn serialize_uuid_simple<S>(uuid: &Uuid, serializer: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    serializer.serialize_str(&uuid.to_simple().to_string())
 }
