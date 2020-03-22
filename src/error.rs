@@ -1,6 +1,8 @@
 //! API error and common error
 
 use reqwest::{Error as ReqwestError, Response};
+use std::error::Error as StdError;
+use std::fmt;
 use std::result::Result as StdResult;
 use url::ParseError;
 
@@ -44,6 +46,46 @@ pub enum Error {
 
     /// API error, from Mojang server
     API(ApiError),
+}
+
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Error::Reqwest(reqwest_error) => write!(f, "Reqwest error: {}", reqwest_error),
+            Error::UrlParseError(url_parse_error) => {
+                write!(f, "URL parse error: {}", url_parse_error)
+            }
+            Error::MissingField(field) => write!(f, "Missing field: {}", field),
+            Error::API(api_error) => match api_error {
+                ApiError::MethodNotAllowed(message) => {
+                    write!(f, "API error: MethodNotAllowed ({})", message)
+                }
+                ApiError::NotFound(message) => write!(f, "API error: NotFound ({})", message),
+                ApiError::ForbiddenOperationException(message) => {
+                    write!(f, "API error: ForbiddenOperationException ({})", message)
+                }
+                ApiError::IllegalArgumentException(message) => {
+                    write!(f, "API error: IllegalArgumentException ({})", message)
+                }
+                ApiError::UnsupportedMediaType(message) => {
+                    write!(f, "API error: UnsupportedMediaType ({})", message)
+                }
+                ApiError::Unknown { error, message } => {
+                    write!(f, "API error: {} ({})", error, message)
+                }
+            },
+        }
+    }
+}
+
+impl StdError for Error {
+    fn cause(&self) -> Option<&dyn StdError> {
+        match self {
+            Error::Reqwest(reqwest_error) => Some(reqwest_error),
+            Error::UrlParseError(url_parse_error) => Some(url_parse_error),
+            _ => None,
+        }
+    }
 }
 
 impl From<ReqwestError> for Error {
