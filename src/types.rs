@@ -45,7 +45,7 @@ pub struct Profile {
     pub name: String,
 
     /// Only appears in the response if `true`. Default to `false`. Redundant to the newer legacyProfile.
-    #[serde(default = "default_false")]
+    #[serde(default)]
     pub legacy: bool,
 }
 
@@ -60,10 +60,6 @@ pub struct ErrorMessage {
     pub error_message: String,
 
     pub cause: Option<String>,
-}
-
-fn default_false() -> bool {
-    false
 }
 
 /// Convert Mojang special key-value format to [HashMap]
