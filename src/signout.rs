@@ -17,13 +17,17 @@ struct SignoutParams<'a> {
 ///
 /// Invalidates `access_token`s using an account's username and password.
 /// For example:
-/// ```
-/// # use crate::auth::SignoutBuilder;
+/// ```no_run
+/// # use sage_auth::signout::SignoutBuilder;
+/// # use sage_auth::error::Result;
+/// # async fn anonymous() -> Result<()> {
 /// let resp = SignoutBuilder::new()
 ///     .username("USERNAME")
 ///     .password("PASSWORD")
 ///     .request()
 ///     .await?;
+/// # Ok(())
+/// # }
 /// ```
 pub struct SignoutBuilder<'a> {
     params: SignoutParams<'a>,

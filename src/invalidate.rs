@@ -18,13 +18,18 @@ struct InvalidateParams<'a> {
 ///
 /// An invalidate request can make the given `access_token` invalid.
 /// For example:
-/// ```
-/// # use crate::auth::InvalidateBuilder;
+/// ```no_run
+/// # use sage_auth::invalidate::InvalidateBuilder;
+/// # use sage_auth::error::Result;
+/// # use uuid::Uuid;
+/// # async fn anonymous() -> Result<()> {
 /// let resp = InvalidateBuilder::new()
 ///     .access_token("ACCESS_TOKEN")
-///     .client_token("CLIENT_TOKEN")
+///     .client_token(Uuid::new_v4())
 ///     .request()
 ///     .await?;
+/// # Ok(())
+/// # }
 /// ```
 pub struct InvalidateBuilder<'a> {
     params: InvalidateParams<'a>,

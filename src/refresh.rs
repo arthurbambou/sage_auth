@@ -23,13 +23,18 @@ struct RefreshParams<'a> {
 /// preferred over storing the user's password in a file.
 ///
 /// For example:
-/// ```
-/// # use crate::auth::RefreshBuilder;
+/// ```no_run
+/// # use sage_auth::refresh::RefreshBuilder;
+/// # use sage_auth::error::Result;
+/// # use uuid::Uuid;
+/// # async fn anonymous() -> Result<()> {
 /// let resp = RefreshBuilder::new()
 ///     .access_token("ACCESS_TOKEN")
-///     .client_token("CLIENT_TOKEN")
+///     .client_token(Uuid::new_v4())
 ///     .request()
 ///     .await?;
+/// # Ok(())
+/// # }
 /// ```
 pub struct RefreshBuilder<'a> {
     params: RefreshParams<'a>,

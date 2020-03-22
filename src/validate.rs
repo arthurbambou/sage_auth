@@ -20,13 +20,18 @@ struct ValidateParams<'a> {
 ///
 /// For more details, see [https://wiki.vg/Authentication].
 /// For example:
-/// ```
-/// # use crate::auth::ValidateBuilder;
+/// ```no_run
+/// # use sage_auth::validate::ValidateBuilder;
+/// # use sage_auth::error::Result;
+/// # use uuid::Uuid;
+/// # async fn anonymous() -> Result<()> {
 /// let resp = ValidateBuilder::new()
 ///     .access_token("ACCESS_TOKEN")
-///     .client_token("CLIENT_TOKEN")
+///     .client_token(Uuid::new_v4())
 ///     .request()
 ///     .await?;
+/// # Ok(())
+/// # }
 /// ```
 pub struct ValidateBuilder<'a> {
     params: ValidateParams<'a>,

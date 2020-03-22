@@ -28,13 +28,17 @@ struct AuthenticateParams<'a> {
 /// `AuthenticateBuilder` is used to generate a authenticate request
 ///
 /// For example:
-/// ```
-/// # use crate::auth::AuthenticateBuilder;
+/// ```no_run
+/// # use sage_auth::auth::AuthenticateBuilder;
+/// # use sage_auth::error::Result;
+/// # async fn anonymous() -> Result<()> {
 /// let resp = AuthenticateBuilder::new()
 ///     .username("USERNAME")
 ///     .password("PASSWORD")
 ///     .request()
 ///     .await?;
+/// # Ok(())
+/// # }
 /// ```
 pub struct AuthenticateBuilder<'a> {
     params: AuthenticateParams<'a>,
