@@ -37,16 +37,28 @@ pub struct InvalidateBuilder<'a> {
     endpoint: &'a str,
 }
 
-impl<'a> InvalidateBuilder<'a> {
-    pub fn new() -> InvalidateBuilder<'a> {
+impl Default for InvalidateParams<'_> {
+    fn default() -> InvalidateParams<'static> {
+        InvalidateParams {
+            access_token: None,
+            client_token: None,
+        }
+    }
+}
+
+impl Default for InvalidateBuilder<'_> {
+    fn default() -> InvalidateBuilder<'static> {
         InvalidateBuilder {
-            params: InvalidateParams {
-                access_token: None,
-                client_token: None,
-            },
+            params: InvalidateParams::default(),
             server: (*DEFAULT_SERVER).clone(),
             endpoint: "/invalidate",
         }
+    }
+}
+
+impl<'a> InvalidateBuilder<'a> {
+    pub fn new() -> InvalidateBuilder<'a> {
+        InvalidateBuilder::default()
     }
 
     /// Client token, the same as when you request `access_token`.

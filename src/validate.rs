@@ -39,16 +39,28 @@ pub struct ValidateBuilder<'a> {
     endpoint: &'a str,
 }
 
-impl<'a> ValidateBuilder<'a> {
-    pub fn new() -> ValidateBuilder<'a> {
+impl Default for ValidateParams<'_> {
+    fn default() -> ValidateParams<'static> {
+        ValidateParams {
+            access_token: None,
+            client_token: None,
+        }
+    }
+}
+
+impl Default for ValidateBuilder<'_> {
+    fn default() -> ValidateBuilder<'static> {
         ValidateBuilder {
-            params: ValidateParams {
-                access_token: None,
-                client_token: None,
-            },
+            params: ValidateParams::default(),
             server: (*DEFAULT_SERVER).clone(),
             endpoint: "/validate",
         }
+    }
+}
+
+impl<'a> ValidateBuilder<'a> {
+    pub fn new() -> ValidateBuilder<'a> {
+        ValidateBuilder::default()
     }
 
     /// Client token, the same as when you request `access_token`.

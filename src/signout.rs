@@ -35,16 +35,28 @@ pub struct SignoutBuilder<'a> {
     endpoint: &'a str,
 }
 
-impl<'a> SignoutBuilder<'a> {
-    pub fn new() -> SignoutBuilder<'a> {
+impl Default for SignoutParams<'_> {
+    fn default() -> SignoutParams<'static> {
+        SignoutParams {
+            username: None,
+            password: None,
+        }
+    }
+}
+
+impl Default for SignoutBuilder<'_> {
+    fn default() -> SignoutBuilder<'static> {
         SignoutBuilder {
-            params: SignoutParams {
-                username: None,
-                password: None,
-            },
+            params: SignoutParams::default(),
             server: (*DEFAULT_SERVER).clone(),
             endpoint: "/signout",
         }
+    }
+}
+
+impl<'a> SignoutBuilder<'a> {
+    pub fn new() -> SignoutBuilder<'a> {
+        SignoutBuilder::default()
     }
 
     /// Set username

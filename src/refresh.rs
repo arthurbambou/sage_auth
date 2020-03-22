@@ -59,17 +59,29 @@ pub struct RefreshResponse {
     pub user: Option<User>,
 }
 
-impl<'a> RefreshBuilder<'a> {
-    pub fn new() -> RefreshBuilder<'a> {
+impl Default for RefreshParams<'_> {
+    fn default() -> RefreshParams<'static> {
+        RefreshParams {
+            access_token: None,
+            client_token: None,
+            request_user: false,
+        }
+    }
+}
+
+impl Default for RefreshBuilder<'_> {
+    fn default() -> RefreshBuilder<'static> {
         RefreshBuilder {
-            params: RefreshParams {
-                access_token: None,
-                client_token: None,
-                request_user: false,
-            },
+            params: RefreshParams::default(),
             server: (*DEFAULT_SERVER).clone(),
             endpoint: "/refresh",
         }
+    }
+}
+
+impl<'a> RefreshBuilder<'a> {
+    pub fn new() -> RefreshBuilder<'a> {
+        RefreshBuilder::default()
     }
 
     /// Client token, the same as when you request `access_token`.

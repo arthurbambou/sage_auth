@@ -67,22 +67,40 @@ pub struct AuthenticateResponse {
     pub user: Option<User>,
 }
 
-impl<'a> AuthenticateBuilder<'a> {
-    pub fn new() -> AuthenticateBuilder<'a> {
+impl Default for AgentInfo<'_> {
+    fn default() -> AgentInfo<'static> {
+        AgentInfo {
+            name: "Minecraft",
+            version: 1,
+        }
+    }
+}
+
+impl Default for AuthenticateParams<'_> {
+    fn default() -> AuthenticateParams<'static> {
+        AuthenticateParams {
+            username: None,
+            password: None,
+            client_token: None,
+            request_user: false,
+            agent: AgentInfo::default(),
+        }
+    }
+}
+
+impl Default for AuthenticateBuilder<'_> {
+    fn default() -> AuthenticateBuilder<'static> {
         AuthenticateBuilder {
-            params: AuthenticateParams {
-                username: None,
-                password: None,
-                client_token: None,
-                request_user: false,
-                agent: AgentInfo {
-                    name: "Minecraft",
-                    version: 1,
-                },
-            },
+            params: AuthenticateParams::default(),
             server: (*DEFAULT_SERVER).clone(),
             endpoint: "/authenticate",
         }
+    }
+}
+
+impl<'a> AuthenticateBuilder<'a> {
+    pub fn new() -> AuthenticateBuilder<'a> {
+        AuthenticateBuilder::default()
     }
 
     /// Set username
