@@ -17,10 +17,6 @@ pub struct User {
 
     /// Username, format is `user@example.com`.
     pub username: String,
-
-    /// Additional properties, such as `preferredLanguage`.
-    #[serde(deserialize_with = "properties_parser")]
-    pub properties: HashMap<String, String>,
 }
 
 /// Account profile
